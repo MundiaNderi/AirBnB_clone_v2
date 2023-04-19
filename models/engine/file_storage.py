@@ -38,7 +38,7 @@ class FileStorage:
             return
         key = "{}.{}".format(type(obj).__name__, obj.id)
         if key in self.__objects:
-            del self.objects[key]
+            del self.__objects[key]
             self.save()
 
     def reload(self):
