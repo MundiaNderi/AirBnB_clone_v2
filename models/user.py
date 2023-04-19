@@ -2,7 +2,7 @@
 """This module defines a class User"""
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey
-from sqlachelmy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref
 
 
 class User(BaseModel):

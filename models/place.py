@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, String, Float, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
 from os import getenv

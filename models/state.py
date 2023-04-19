@@ -18,12 +18,11 @@ class State(BaseModel):
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         cities = relationship(
-            "City"
+            "City",
             cascade="all, delete-orphan",
             backref=backref("state", cascade="all"),
             passive_deletes=True,
-            single_parent=True
-        )
+            single_parent=True)
 
         if getenv("HBNB_TYPE_STORAGE") == "fs":
             @property

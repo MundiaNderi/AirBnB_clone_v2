@@ -14,13 +14,12 @@ class City(BaseModel):
 
     __tablename__ = "cities"
     name = Column(String(128), nullable=False)
-    state_id = Column(string(60),
+    state_id = Column(String(60),
                       ForeignKey("states.id", ondelete="CASCADE"),
                       nullable=False)
 
     places = relationship(
-        "Place"
-        cascade="all"
+        "Place",
+        cascade="all",
         backref=backref("cities", cascade="all"),
-        passive_deletes=True
-    )
+        passive_deletes=True)
