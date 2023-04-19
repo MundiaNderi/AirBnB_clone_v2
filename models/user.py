@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class User"""
 from models.base_model import BaseModel
-from sqlalchemy import Column, String ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 from sqlachelmy.orm import relationship, backref
 
 
@@ -23,7 +23,7 @@ class User(BaseModel):
         "Place",
         cascade="all,delete",
         backref=backref("user", cascade="all,delete"),
-        passive_deletes=True
+        passive_deletes=True,
         single_parent=True)
 
     reviews = relationship(
