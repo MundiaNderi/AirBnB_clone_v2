@@ -2,6 +2,18 @@
 """Module for DBstorage class"""
 from os import getenv
 from sqlalchemy import create_engine, MetaData
+from models.base_model import Base
+from models.state import State
+from models.city import City
+from models.user import User
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from sqlalchemy.orm import sessionmaker, scoped_session
+
+
+classes = {"Amenity": Amenity, "City": City, "Place": Place,
+           "Review": Review, "State": State, "User": User}
 
 
 class DBStorage():
@@ -11,7 +23,6 @@ class DBStorage():
 
     def __init__(self):
         """Initializes storage"""
-        from models.base_model import Base
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}:3306/{}'
             .format(getenv("HBNB_MYSQL_USER"),
@@ -20,15 +31,16 @@ class DBStorage():
                     getenv("HBNB_MYSQL_DB")),
             pool_pre_ping=True)
 
-    def all(self, cls=None):
-        """returns all objects of cls"""
-        from models.state import State
-        from models.city import City
-        from models.user import User
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
+        if getenv("HBNB_ENV") == "tests":
+            Base.metadata.drop.all(self.__engine)
 
+    def all(self, cls=None):
+        """returns all objects of cls
+        Query on the current databse session all objects of the given class
+        If cls is None, queries all types of objects.
+        Return:
+            Dict of queried classes in the format <class name>.<obj id> = obj.
+        """
         class_list = [
             State,
             City,
@@ -57,21 +69,11 @@ class DBStorage():
 
     def delete(self, obj=None):
         """delete obj from db"""
-        if obj:
+        if obj is not None:
             self.__session.delete(obj)
-            self.save()
 
     def reload(self):
         """create all tables in the db"""
-        from models.base_model import Base
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.user import User
-        from models.review import Review
-        from models.place import Place
-        from sqlalchemy.orm import sessionmaker, scoped_session
-
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
