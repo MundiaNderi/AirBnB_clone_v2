@@ -1,21 +1,70 @@
-#!/usr/bin/env bash
 # Sets up web servers
 
-apt-get -y update
-apt-get -y install nginx
+class setup_web_static {
+  package { 'nginx':
+    ensure => 'installed',
+  }
 
-service nginx start
+  service { 'nginx':
+    ensure => 'running',
+    enable => true,
+  }
 
-mkdir -p /data/
-mkdir -p /data/web_static/
-mkdir -p /data/web_static/releases/
-mkdir -p /data/web_static/shared/
-mkdir -p /data/web_static/releases/test
-touch /data/web_static/releases/test/index.html
+  file { '/data/':
+    ensure => 'directory',
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+  }
 
-echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html
+  file { '/data/web_static/':
+    ensure => 'directory',
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+  }
 
-ln -sf /data/web_static/releases/test/ /data/web_static/current
-chown -R ubuntu:ubuntu /data/
-sed -i '/listen 80 default_server;/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-available/default
-service nginx restart
+  file { '/data/web_static/releases/':
+    ensure => 'directory',
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+  }
+
+  file { '/data/web_static/shared/':
+    ensure => 'directory',
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+  }
+
+  file { '/data/web_static/releases/test/':
+    ensure => 'directory',
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+  }
+
+  file { '/data/web_static/releases/test/index.html':
+    ensure => 'file',
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+    mode   => '0644',
+    content => 'Holberton School',
+  }
+
+  file { '/data/web_static/current':
+    ensure => 'link',
+    target => '/data/web_static/releases/test',
+  }
+
+  file { '/etc/nginx/sites-available/default':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('setup_web_static/default.erb'),
+    notify  => Service['nginx'],
+  }
+
+  file { '/etc/nginx/sites-enabled/default':
+    ensure  => 'link',
+    target  => '/etc/nginx/sites-available/default',
+    require => File['/etc/nginx/sites-available/default'],
+  }
+}
