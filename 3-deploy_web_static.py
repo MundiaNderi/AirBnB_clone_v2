@@ -7,9 +7,6 @@ import datetime
 
 env.user = 'ubuntu'
 env.hosts = ['107.22.143.207', '100.25.200.19']
-# Path to SSH private key file
-env.key_filename = '/Users/serahnderi/ssh/school/id_rsa.pub'
-env.warn_only = True  # Continue execution if some commands fail
 
 
 def do_pack():
