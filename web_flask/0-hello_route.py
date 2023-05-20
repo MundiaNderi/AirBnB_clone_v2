@@ -12,5 +12,5 @@ def hello_hbnb():
     return ("Hello HBNB!")
 
 
-if__name__ == "__main__":
-app.run(host=ip, port=port)
+if __name__ == "__main__":
+    app.run(host=ip, port=port)
