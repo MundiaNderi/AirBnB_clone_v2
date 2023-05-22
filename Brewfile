@@ -1,0 +1,8 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "puppetlabs/puppet"
+cask "puppet-agent"
+cask "puppetry"
+cask "temurin"
