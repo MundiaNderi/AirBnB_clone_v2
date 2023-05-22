@@ -12,50 +12,40 @@ The default value of text is “is cool”
 You must use the option strict_slashes=False in your route definition
 """
 from flask import Flask
-
-# Create a Flask Web Application
 app = Flask(__name__)
 
-# Disable strict slashes at the end
-app.url_map.strict_slashes = False
-ip = '0.0.0.0'
-port = 5000
 
-
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def hello_hbnb():
-    """Route handler function for the root URL.
-    Returns the string "Hello HBNB!" when the root URL is accessed.
-    """
-    return ("Hello HBNB!")
+    """ hello_hbnb method """
+    return ('Hello HBNB!')
 
 
-@app.route('/hbnb')
-def hello_hbnb():
-    """
-    Route handler function for the '/hbnb' URL.
-    Returns the string "HBNB" when the '/hbnb' URL is accessed.
-    """
-    return ("HBNB")
+@app.route('/hbnb', strict_slashes=False)
+def only_hbnb():
+    """ only_hbnb method: """
+    return ('HBNB')
 
 
-@app.route('/c/<text>')
-def c_text(text):
-    """
-    Route handler function for the '/c/<text>' URL.
-    Returns the string "C " followed by the value of the `text` variable.
-    Underscore (_) symbols in the `text` variable are replaced with spaces.
-    """
-    return ("C {}".format(text.replace("_", " ")))
+@app.route('/c/<text>', strict_slashes=False)
+def only_c(text):
+    """ only_c method: route to return C followed by text variable, replaces _
+        with spaces """
+    text = text.replace('_', ' ')
+    return ('C' + ' ' + text)
 
 
-@app.route('/python')
-@app.route('/python/<text>')
-def python_text(text='is cool'):
-    # returns user text with python in front
-    return ("Python {}".format(text.replace("_", " ")))
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<path:text>', strict_slashes=False)
+def only_python(text=None):
+    """ only_python method: route to return text follow by "is cool"
+        (can be overwritten), replaces _ with spaces """
+    if text is None:
+        text = 'is cool'
+    else:
+        text = text.replace('_', ' ')
+    return ('Python' + ' ' + text)
 
 
-# Start the Flask application if this script is executed directly
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', ip=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

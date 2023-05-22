@@ -1,5 +1,17 @@
 #!usr/bin/python3
-# starts a Flask web app
+"""
+script that starts a Flask web application:
+Your web application must be listening on 0.0.0.0, port 5000
+Routes: 1- /: display “Hello HBNB!”
+2- /hbnb: display “HBNB”
+3- /c/<text>: display “C ” followed by the value of the text
+variable (replace underscore _ symbols with a space )
+4- /python/(<text>): display “Python ”, followed by the value of...
+the text variable (replace underscore _ symbols with a space )
+The default value of text is “is cool”
+5- /number/<n>: display “n is a number” only if n is an integer
+You must use the option strict_slashes=False in your route definition
+"""
 from flask import Flask
 app = Flask(__name__)
 app.url_map.strict_slashes = False
