@@ -18,7 +18,7 @@ port = 5000
 
 
 # Define a route for the root URL
-@app.route('/')
+@app.route('/airbnb-onepage/')
 def hello_hbnb():
     # returns Hello HBNB when curl'd
     return ("Hello HBNB!")
